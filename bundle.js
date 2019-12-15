@@ -1,26 +1,34 @@
 (function(){function r(e,n,t){function o(i,f){if(!n[i]){if(!e[i]){var c="function"==typeof require&&require;if(!f&&c)return c(i,!0);if(u)return u(i,!0);var a=new Error("Cannot find module '"+i+"'");throw a.code="MODULE_NOT_FOUND",a}var p=n[i]={exports:{}};e[i][0].call(p.exports,function(r){var n=e[i][1][r];return o(n||r)},p,p.exports,r,e,n,t)}return n[i].exports}for(var u="function"==typeof require&&require,i=0;i<t.length;i++)o(t[i]);return o}return r})()({1:[function(require,module,exports){
+
+},{}],2:[function(require,module,exports){
 var paper = require('paper')
 
-window.onload = function() {
-  var canvas = document.getElementById('myCanvas')
+var canvas = document.getElementById('myCanvas')
+canvas.style.background = '#fff8e6'
+canvas.width = 500
+canvas.height = 600
 
+
+
+
+function drawPath(path, x, y) {
+  path.add(x, y)
+}
+
+window.onload = function() {
   paper.setup(canvas)
 
-  var path = new paper.Path();
+  var path = new paper.Path()
   path.strokeColor = 'black'
 
-  var start = new paper.Point(100, 100)
-  path.moveTo(start)
-  path.lineTo(start.add([200, 200]))
+  canvas.addEventListener('mousemove', function(event) {
+    drawPath(path, event.x, event.y)
+  })
 
   paper.view.draw();
 }
 
-// var myPath = new paper.Path()
-// myPath.strokeColor = 'black'
-// myPath.add(new paper.Point(0, 0), new paper.Point(100, 100))
-
-},{"paper":3}],2:[function(require,module,exports){
+},{"paper":4}],3:[function(require,module,exports){
 (function (global, factory) {
   typeof exports === 'object' && typeof module !== 'undefined' ? factory(exports) :
   typeof define === 'function' && define.amd ? define(['exports'], factory) :
@@ -5023,7 +5031,7 @@ window.onload = function() {
 
 }));
 
-},{}],3:[function(require,module,exports){
+},{}],4:[function(require,module,exports){
 /*!
  * Paper.js v0.12.3 - The Swiss Army Knife of Vector Graphics Scripting.
  * http://paperjs.org/
@@ -22103,6 +22111,4 @@ if (typeof define === 'function' && define.amd) {
 return paper;
 }.call(this, typeof self === 'object' ? self : null);
 
-},{"./node/extend.js":4,"./node/self.js":4,"acorn":2}],4:[function(require,module,exports){
-
-},{}]},{},[1]);
+},{"./node/extend.js":1,"./node/self.js":1,"acorn":3}]},{},[2]);

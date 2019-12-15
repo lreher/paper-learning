@@ -1,20 +1,24 @@
 var paper = require('paper')
 
-window.onload = function() {
-  var canvas = document.getElementById('myCanvas')
+// Canvas Setup
+var canvas = document.getElementById('myCanvas')
+canvas.style.background = '#fff8e6'
+canvas.width = 500
+canvas.height = 600
 
+function drawPath(path, x, y) {
+  path.add(x, y)
+}
+
+window.onload = function() {
   paper.setup(canvas)
 
-  var path = new paper.Path();
+  var path = new paper.Path()
   path.strokeColor = 'black'
 
-  var start = new paper.Point(100, 100)
-  path.moveTo(start)
-  path.lineTo(start.add([200, 200]))
+  canvas.addEventListener('mousemove', function(event) {
+    drawPath(path, event.x, event.y)
+  })
 
   paper.view.draw();
 }
-
-// var myPath = new paper.Path()
-// myPath.strokeColor = 'black'
-// myPath.add(new paper.Point(0, 0), new paper.Point(100, 100))
