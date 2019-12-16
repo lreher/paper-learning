@@ -16,8 +16,8 @@ function gameLoop() {
     for (i = 0; i < myDudes.length; i++) {
       myDude = myDudes[i]
 
-      myDude.velX += (Math.random() + myDude.accXdisposition) - 0.5
-      myDude.velY += (Math.random() + myDude.accYdisposition) - 0.5
+      // myDude.velX += (Math.random() + myDude.accXdisposition) - 0.5
+      // myDude.velY += (Math.random() + myDude.accYdisposition) - 0.5
 
       myDude.x += myDude.velX
       myDude.y += myDude.velY
@@ -30,8 +30,8 @@ function gameLoop() {
 
       angle = Math.atan2(dx, dy)
 
-      myDude.accXdisposition = Math.cos(angle)
-      myDude.accYdisposition = Math.sin(angle)
+      myDude.velX = Math.cos(angle) * 2
+      myDude.velY = -Math.sin(angle) * 2
 
       // if (myDude.x > window.innerWidth) {
       //   myDude.accXdisposition = -0.25
