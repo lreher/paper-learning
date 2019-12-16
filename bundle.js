@@ -17,14 +17,38 @@ function gameLoop() {
     for (i = 0; i < myDudes.length; i++) {
       myDude = myDudes[i]
 
-      myDude.velX += Math.random() - 0.5
-      myDude.velY += Math.random() - 0.5
+      myDude.velX += (Math.random() + myDude.accXdisposition) - 0.5
+      myDude.velY += (Math.random() + myDude.accYdisposition) - 0.5
 
       myDude.x += myDude.velX
       myDude.y += myDude.velY
 
       myDude.path.add(myDude.x, myDude.y)
       myDude.path.smooth()
+
+      dx = myDude.x - canvas.width/2
+      dy = myDude.y - canvas.height/2
+
+      angle = Math.atan2(dx, dy)
+
+      myDude.accXdisposition = Math.cos(angle)
+      myDude.accYdisposition = Math.sin(angle)
+
+      // if (myDude.x > window.innerWidth) {
+      //   myDude.accXdisposition = -0.25
+      // } else if (myDude.x < 0) {
+      //   myDude.accXdisposition = 0.25
+      // } else {
+      //   myDude.accXdisposition = 0
+      // }
+      //
+      // if (myDude.y > window.innerHeight) {
+      //   myDude.accYdisposition = -0.25
+      // } else if (myDude.y < 0) {
+      //   myDude.accYdisposition = 0.25
+      // } else {
+      //   myDude.accYdisposition = 0
+      // }
 
       if (myDude.path.segments.length > 30) {
         myDude.path.segments.shift()
@@ -52,6 +76,8 @@ window.onload = function() {
         y: canvas.height/numberY * j,
         velX: 0,
         velY: 0,
+        accXdisposition: 0,
+        accYdisposition: 0,
         path: path
       }
 
