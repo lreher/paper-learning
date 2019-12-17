@@ -1,0 +1,21 @@
+html, body, {
+    position:fixed;
+    top:0;
+    bottom:0;
+    left:0;
+    right:0;
+}
+
+#myCanvas {
+  height: 79vh;
+  width: 80vw;
+}
+
+.settings {
+  text-align: center;
+}
+
+.settings {
+  vertical-align:top;
+  display:inline-block;
+}
