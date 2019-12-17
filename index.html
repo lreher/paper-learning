@@ -3,13 +3,52 @@
 <html lang="en">
 <head>
   <meta charset="utf-8">
-
   <title>What fun we're having!</title>
 </head>
 
 <body>
-  <h1>What fun we're having!</h1>
-  <canvas id="myCanvas"></canvas>
+  <div class="header">
+    <h1>What fun we're having!</h1>
+  </div>
+
+  <div class="content">
+    <canvas id="myCanvas"></canvas>
+  </div>
+
+  <div class="footer">
+    <div class="settings">
+      <h3>Velocity X</h3>
+      <input type="range" min="1" max="100" value="50" class="slider" id="velocityXSlider">
+    </div>
+
+    <div class="settings">
+      <h3>Velocity Y</h3>
+      <input type="range" min="1" max="100" value="50" class="slider" id="velocityYSlider">
+    </div>
+
+    <div class="settings">
+      <h3>Angle</h3>
+      <input type="range" min="1" max="100" value="50" class="slider" id="angleSlider">
+    </div>
+
+    <div class="settings">
+      <h3>Width</h3>
+      <input type="range" min="1" max="100" value="10" class="slider" id="widthSlider">
+    </div>
+
+    <div class="settings">
+      <h3>Length</h3>
+      <input type="range" min="1" max="100" value="50" class="slider" id="lengthSlider">
+    </div>
+
+    <div class="settings">
+      <h3>Reset</h3>
+      <button type="button" id="resetDudes">Reset Dudes</button>
+      <button type="button" id="resetScale">Reset Scale</button>
+    </div>
+  </div>
+
   <script src="bundle.js"></script>
+  <link rel="stylesheet" href="style.css">
 </body>
 </html>
