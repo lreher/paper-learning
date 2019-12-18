@@ -10,54 +10,85 @@ screenHeight = 0
 var myDudes = []
 dudeCount = 20
 
+// Slider Setup
 var sliderAttributes = {
   velX: 0,
   velY: 0,
   angle: Math.PI/2,
   length: 30
 }
-var sliderDistribution = 10
+var sliderSensitivity = 10
 
-var velocityXSlider = document.getElementById("velocityXSlider")
+var mouseDown = false
+var pointX = 0
+var pointY = 0
+
+// Listeners
+canvas.addEventListener('mousedown', function(event) {
+  mouseDown = true
+
+  sliderAttributes.velX = (velocityXSlider.value - 2) * 2
+  sliderAttributes.velY = (velocityYSlider.value - 2) * 2
+})
+
+canvas.addEventListener('mouseup', function(event) {
+  mouseDown = false
+
+  pointX = event.x
+  pointY = event.y
+})
+
+canvas.addEventListener('mousemove', function(event) {
+  if (mouseDown === true) {
+    pointX = event.x
+    pointY = event.y
+  }
+})
+
+document.addEventListener('keydown', function(event) {
+  if (event.keyCode === 32) {
+    resetDudes.click()
+  }
+})
+
+var velocityXSlider = document.getElementById('velocityXSlider')
 velocityXSlider.oninput = function() {
-  sliderAttributes.velX = velocityXSlider.value/sliderDistribution - 50/sliderDistribution
+  sliderAttributes.velX = (velocityXSlider.value - 2) * 2
 }
 
-var velocityYSlider = document.getElementById("velocityYSlider")
+var velocityYSlider = document.getElementById('velocityYSlider')
 velocityYSlider.oninput = function() {
-  sliderAttributes.velY = velocityYSlider.value/sliderDistribution - 50/sliderDistribution
+  sliderAttributes.velY = (velocityYSlider.value - 2) * 2
 }
 
-var angleSlider = document.getElementById("angleSlider")
+var angleSlider = document.getElementById('angleSlider')
 angleSlider.oninput = function() {
   slideAngle = angleSlider.value * 1.8
   sliderAttributes.angle = slideAngle * (Math.PI/180)
 }
 
-var widthSlider = document.getElementById("widthSlider")
+var widthSlider = document.getElementById('widthSlider')
 widthSlider.oninput = function() {
 
   for (i = 0; i < myDudes.length; i++) {
-    myDudes[i].path.strokeWidth = widthSlider.value/sliderDistribution
+    myDudes[i].path.strokeWidth = widthSlider.value/sliderSensitivity
   }
 }
 
-var lengthSlider = document.getElementById("lengthSlider")
+var lengthSlider = document.getElementById('lengthSlider')
 lengthSlider.oninput = function() {
   sliderAttributes.length = lengthSlider.value
 }
 
-var resetDudes = document.getElementById("resetDudes")
+var resetDudes = document.getElementById('resetDudes')
 resetDudes.onclick = function() {
   var iterator = 0
-
-  console.log(myDudes.length)
 
   for (i = 0; i < dudeCount; i++) {
     for (j = 0; j < dudeCount; j++) {
       var path = new paper.Path()
       path.strokeColor = 'black'
-      path.strokeWidth = widthSlider.value/sliderDistribution
+      path.strokeWidth = widthSlider.value/sliderSensitivity
 
       myDude = myDudes[iterator]
       iterator += 1
@@ -70,14 +101,15 @@ resetDudes.onclick = function() {
   }
 }
 
-var fullReset = document.getElementById("fullReset")
+var fullReset = document.getElementById('fullReset')
 fullReset.onclick = function() {
-  dudeCount = document.getElementById("dudeCount").value
+  dudeCount = document.getElementById('dudeCount').value
 
   createDudes()
 
-  velocityXSlider.value = 50
-  velocityYSlider.value = 50
+  pointX = screenWidth/2
+  pointY = screenHeight/2
+
   angleSlider.value = 50
   widthSlider.value = 10
   lengthSlider.value = 10
@@ -87,6 +119,7 @@ fullReset.onclick = function() {
   sliderAttributes.angle = Math.PI/2
 }
 
+// Game Logic
 function createDudes() {
   console.log(myDudes.length)
   console.log(myDudes.length)
@@ -95,15 +128,18 @@ function createDudes() {
     myDudes[i].path.remove()
   }
   myDudes = []
-  
+
   screenWidth = canvas.width/2
   screenHeight = canvas.height/2
+
+  pointX = screenWidth/2
+  pointY = screenHeight/2
 
   for (i = 0; i < dudeCount; i++) {
     for (j = 0; j < dudeCount; j++) {
       var path = new paper.Path()
       path.strokeColor = 'black'
-      path.strokeWidth = widthSlider.value/sliderDistribution
+      path.strokeWidth = widthSlider.value/sliderSensitivity
 
       myDude = {
         x: screenWidth/dudeCount * i,
@@ -134,8 +170,8 @@ function gameLoop() {
     myDude.path.add(myDude.x, myDude.y)
     myDude.path.smooth()
 
-    dx = myDude.x - screenWidth/2
-    dy = myDude.y - screenHeight/2
+    dx = myDude.x - pointX
+    dy = myDude.y - pointY
 
     angle = Math.atan2(dx, dy) + sliderAttributes.angle
 
