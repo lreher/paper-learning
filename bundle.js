@@ -8,8 +8,7 @@ screenHeight = 0
 
 // Dudes Setup
 var myDudes = []
-numberX = 20
-numberY = 20
+dudeCount = 20
 
 var sliderAttributes = {
   velX: 0,
@@ -17,16 +16,15 @@ var sliderAttributes = {
   angle: Math.PI/2,
   length: 30
 }
+var sliderDistribution = 10
 
 var velocityXSlider = document.getElementById("velocityXSlider")
 velocityXSlider.oninput = function() {
-  sliderDistribution = 10
   sliderAttributes.velX = velocityXSlider.value/sliderDistribution - 50/sliderDistribution
 }
 
 var velocityYSlider = document.getElementById("velocityYSlider")
 velocityYSlider.oninput = function() {
-  sliderDistribution = 10
   sliderAttributes.velY = velocityYSlider.value/sliderDistribution - 50/sliderDistribution
 }
 
@@ -38,7 +36,6 @@ angleSlider.oninput = function() {
 
 var widthSlider = document.getElementById("widthSlider")
 widthSlider.oninput = function() {
-  sliderDistribution = 10
 
   for (i = 0; i < myDudes.length; i++) {
     myDudes[i].path.strokeWidth = widthSlider.value/sliderDistribution
@@ -52,27 +49,32 @@ lengthSlider.oninput = function() {
 
 var resetDudes = document.getElementById("resetDudes")
 resetDudes.onclick = function() {
-  var dudeCount = 0
+  var iterator = 0
 
-  for (i = 0; i < numberX; i++) {
-    for (j = 0; j < numberY; j++) {
+  console.log(myDudes.length)
+
+  for (i = 0; i < dudeCount; i++) {
+    for (j = 0; j < dudeCount; j++) {
       var path = new paper.Path()
       path.strokeColor = 'black'
       path.strokeWidth = widthSlider.value/sliderDistribution
 
-      myDude = myDudes[dudeCount]
-      dudeCount += 1
+      myDude = myDudes[iterator]
+      iterator += 1
 
-      myDude.x = screenWidth/numberX * i,
-      myDude.y = screenHeight/numberY * j
+      myDude.x = screenWidth/dudeCount * i,
+      myDude.y = screenHeight/dudeCount * j
       myDude.path.remove()
       myDude.path = path
     }
   }
 }
 
-var resetScale = document.getElementById("resetScale")
-resetScale.onclick = function() {
+var fullReset = document.getElementById("fullReset")
+fullReset.onclick = function() {
+  dudeCount = document.getElementById("dudeCount").value
+
+  createDudes()
 
   velocityXSlider.value = 50
   velocityYSlider.value = 50
@@ -85,7 +87,40 @@ resetScale.onclick = function() {
   sliderAttributes.angle = Math.PI/2
 }
 
+function createDudes() {
+  console.log(myDudes.length)
+  console.log(myDudes.length)
 
+  for (i = 0; i < myDudes.length; i++) {
+    myDudes[i].path.remove()
+  }
+  myDudes = []
+  
+  screenWidth = canvas.width/2
+  screenHeight = canvas.height/2
+
+  for (i = 0; i < dudeCount; i++) {
+    for (j = 0; j < dudeCount; j++) {
+      var path = new paper.Path()
+      path.strokeColor = 'black'
+      path.strokeWidth = widthSlider.value/sliderDistribution
+
+      myDude = {
+        x: screenWidth/dudeCount * i,
+        y: screenHeight/dudeCount * j,
+        velX: 0,
+        velY: 0,
+        accX: 0,
+        accY: 0,
+        path: path
+      }
+
+      myDudes.push(myDude)
+    }
+  }
+}
+
+//calc(100vh - 250px)
 function gameLoop() {
   for (i = 0; i < myDudes.length; i++) {
     myDude = myDudes[i]
@@ -111,39 +146,14 @@ function gameLoop() {
       myDude.path.segments.shift()
     }
   }
-
-  requestAnimationFrame(gameLoop)
 }
 
 window.onload = function() {
   paper.setup(canvas)
-
-  screenWidth = canvas.width/2
-  screenHeight = canvas.height/2
-
-  for (i = 0; i < numberX; i++) {
-    for (j = 0; j < numberY; j++) {
-      var path = new paper.Path()
-      path.strokeColor = 'black'
-      path.strokeWidth = 1
-
-      myDude = {
-        x: screenWidth/numberX * i,
-        y: screenHeight/numberY * j,
-        velX: 0,
-        velY: 0,
-        accX: 0,
-        accY: 0,
-        path: path
-      }
-
-      myDudes.push(myDude)
-    }
-  }
-
-  requestAnimationFrame(gameLoop)
-
   paper.view.draw();
+
+  createDudes()
+  setInterval(gameLoop, 50)
 }
 
 },{"paper":3}],2:[function(require,module,exports){
